@@ -28,7 +28,7 @@
   </main>
 
   <script>
-    fetch('https://script.google.com/macros/s/(your-code)/exec')
+    fetch('https://script.google.com/macros/s/AKfycbylZSQ-VuhFx2o3VmWRElqE0tavlq11lFbDrcu_Z2wmRh-Ba51VBCwWUgVuRzCTdxHL/exec')
       .then(response => response.json())
       .then(data => {
         const sorted = data.pdfs.sort((a, b) => new Date(b.date) - new Date(a.date));
