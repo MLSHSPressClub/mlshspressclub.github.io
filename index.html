@@ -31,10 +31,10 @@
       <p>Sign up to contribute articles, artwork, or join our editorial team!</p>
 
       <form action="https://api.web3forms.com/submit" method="POST" class="signup-form">
-        <input type="hidden" name="access_key" value="code">
+        <input type="hidden" name="access_key" value="f74bae96-f830-4a25-afd4-6946e7397c7a">
         <input type="hidden" name="subject" value="Press Club Submission">
         <input type="hidden" name="from_name" value="Press Submission Bot">
-        <input type="hidden" name="redirect" value="thankyou.html">
+        <input type="hidden" name="redirect" value="https://mlshspressclub/thankyou.html">
 
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="number" name="year" placeholder="Year (e.g. 2025)" required>
@@ -46,7 +46,7 @@
   </main>
 
   <script>
-    fetch('https://script.google.com/macros/s/(your-code)/exec')
+    fetch('https://script.google.com/macros/s/AKfycbylZSQ-VuhFx2o3VmWRElqE0tavlq11lFbDrcu_Z2wmRh-Ba51VBCwWUgVuRzCTdxHL/exec')
       .then(response => response.json())
       .then(data => {
         const latestPdf = data.pdfs[0];
