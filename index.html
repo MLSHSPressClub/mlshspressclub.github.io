@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Press Club - Home</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <h1 class="logo">Press Club</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="issues.html">All Issues</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="content">
+      <h2>Latest Issue</h2>
+      <iframe id="latest-pdf" width="80%" height="600px"></iframe>
+    </section>
+
+    <section class="signup">
+      <h2>Join the Press Club</h2>
+      <p>Sign up to contribute articles, artwork, or join our editorial team!</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="signup-form">
+        <input type="hidden" name="access_key" value="code">
+        <input type="hidden" name="subject" value="Press Club Submission">
+        <input type="hidden" name="from_name" value="Press Submission Bot">
+        <input type="hidden" name="redirect" value="thankyou.html">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="number" name="year" placeholder="Year (e.g. 2025)" required>
+        <input type="email" name="School Email" placeholder="School Email" required>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    fetch('https://script.google.com/macros/s/(your-code)/exec')
+      .then(response => response.json())
+      .then(data => {
+        const latestPdf = data.pdfs[0];
+        document.getElementById('latest-pdf').src = latestPdf.embedUrl;
+      })
+      .catch(error => console.error('Error loading PDFs:', error));
+  </script>
+</body>
+</html>
