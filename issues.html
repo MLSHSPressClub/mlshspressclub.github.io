@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Press Club - All Issues</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <h1 class="logo">Press Club</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="issues.html" class="active">All Issues</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="content">
+      <h2>All Issues</h2>
+      <div id="archive-container"></div>
+    </section>
+  </main>
+
+  <script>
+    fetch('https://script.google.com/macros/s/(your-code)/exec')
+      .then(response => response.json())
+      .then(data => {
+        const sorted = data.pdfs.sort((a, b) => new Date(b.date) - new Date(a.date));
+        let html = '';
+        sorted.forEach(pdf => {
+          html += `
+            <div class="pdf-item">
+              <h3>${pdf.name.replace('PRESS-', '').replace('.pdf', '')}</h3>
+              <iframe src="${pdf.embedUrl}" width="80%" height="600px"></iframe>
+              <p>Published: ${pdf.date}</p>
+            </div>
+          `;
+        });
+        document.getElementById('archive-container').innerHTML = html;
+      })
+      .catch(error => console.error('Error fetching issues:', error));
+  </script>
+</body>
+</html>
