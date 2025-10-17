@@ -1,6 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>,
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>https://mlshspressclub.github.io/</url>
-  <url>https://mlshspressclub.github.io/issues</url>
-  <url>https://mlshspressclub.github.io/about</url>
+
+  <url>
+    <loc>https://mlshspressclub.github.io/index</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://mlshspressclub.github.io/issues</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://mlshspressclub.github.io/about</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://mlshspressclub.github.io/thankyou</loc>
+    <priority>0.2</priority>
+  </url>
+
 </urlset>
+
