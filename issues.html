@@ -29,7 +29,7 @@
   </main>
 
   <script>
-    fetch('https://script.google.com/macros/s/AKfycbylZSQ-VuhFx2o3VmWRElqE0tavlq11lFbDrcu_Z2wmRh-Ba51VBCwWUgVuRzCTdxHL/exec')
+    fetch('https://script.google.com/macros/s/AKfycbyNBOXMh6MqB-UI5Q526MvKpQJ2B1E5NxTPWNIv7on6y9rvlPgRPyOG0B-stam-ltGI/exec')
       .then(response => response.json())
       .then(data => {
         const sorted = data.pdfs.sort((a, b) => new Date(b.date) - new Date(a.date));
