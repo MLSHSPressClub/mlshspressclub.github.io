@@ -26,7 +26,10 @@
   <main>
     <section class="content">
       <h2>Latest Issue</h2>
-      <iframe id="latest-pdf" width="80%" height="600px"></iframe>
+      <div id="latest-article">
+        <h2 id="current-title">Loading latest article...</h2>
+        <iframe id="pdf-viewer" src="" width="100%" height="600px" allow="autoplay"></iframe>
+      </div>
     </section>
 
     <section class="signup">
@@ -81,13 +84,15 @@ document.getElementById("subscribeForm").addEventListener("submit", async (e) =>
   </main>
 
   <script>
-    fetch('https://script.google.com/macros/s/AKfycbyNBOXMh6MqB-UI5Q526MvKpQJ2B1E5NxTPWNIv7on6y9rvlPgRPyOG0B-stam-ltGI/exec')
-      .then(response => response.json())
-      .then(data => {
-        const latestPdf = data.pdfs[0];
-        document.getElementById('latest-pdf').src = latestPdf.embedUrl;
-      })
-      .catch(error => console.error('Error loading PDFs:', error));
+    fetch('YOUR_APPS_SCRIPT_WEB_APP_URL')
+  .then(response => response.json())
+  .then(articles => {
+    if (articles.length > 0) {
+      const latest = articles[0]; // The script already sorted them!
+      document.getElementById('latest-title').innerText = latest.name;
+      document.getElementById('pdf-frame').src = latest.previewUrl;
+    }
+  });
   </script>
 </body>
 </html>
