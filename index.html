@@ -51,24 +51,25 @@
 
     <section class="signup">
       <h2>Never Miss an Article</h2>
-      <p>Get notified every time a new issue is released</p>
-      <form action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="f74bae96-f830-4a25-afd4-6946e7397c7a">
-        <input type="hidden" name="subject" value="Press Club Newsletter Signup">
-        <input type="email" name="email" placeholder="Enter your email" required>
+      <p>Get notified every time a new issue is released.</p>
+      <form id="newsletter-form">
+        <input type="email" id="newsletter-email" name="email" placeholder="Enter your email" required>
         <button type="submit">Join List</button>
       </form>
+      <p id="newsletter-status" style="margin-top: 10px;"></p>
     </section>
   </main>
 
   <script>
+    // Replace this with your Apps Script Web App URL
     const API_URL = 'https://script.google.com/macros/s/AKfycbwfBhgdk1FYU5Zt8oWG-5iJvDozoEIdGToR0FEG6Fl6drCmEAQfwS1zQdCiyPb_IKkh/exec';
 
+    // Load latest article
     fetch(API_URL)
       .then(response => response.json())
       .then(articles => {
         if (Array.isArray(articles) && articles.length > 0) {
-          const latest = articles[0]; // already sorted newest-first
+          const latest = articles[0];
           document.getElementById('current-title').innerText = latest.name;
           document.getElementById('pdf-viewer').src = latest.previewUrl;
         } else {
@@ -79,6 +80,43 @@
         document.getElementById('current-title').innerText = 'Could not load latest article.';
         console.error(err);
       });
+
+    // Newsletter signup
+    document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const emailInput = document.getElementById('newsletter-email');
+      const status = document.getElementById('newsletter-status');
+      const email = emailInput.value.trim();
+
+      status.style.color = '#666';
+      status.innerText = 'Signing you up...';
+
+      try {
+        const formData = new FormData();
+        formData.append('email', email);
+
+        // Apps Script POST endpoints don't support CORS preflight, so we use
+        // a "simple" request (no custom headers, FormData body) which avoids it.
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          status.style.color = 'green';
+          status.innerText = 'Thanks! You\'re on the list.';
+          emailInput.value = '';
+        } else {
+          status.style.color = 'crimson';
+          status.innerText = data.error || 'Something went wrong. Please try again.';
+        }
+      } catch (err) {
+        status.style.color = 'crimson';
+        status.innerText = 'Could not sign up right now. Please try again later.';
+        console.error(err);
+      }
+    });
   </script>
 </body>
 </html>
