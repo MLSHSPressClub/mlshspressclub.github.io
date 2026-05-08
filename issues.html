@@ -24,26 +24,42 @@
   <main>
     <section class="content">
       <h2>All Issues</h2>
-      <div id="archive-container"></div>
+      <div id="archive-container">
+        <p id="archive-status">Loading articles...</p>
+      </div>
     </section>
   </main>
 
   <script>
-    fetch('YOUR_APPS_SCRIPT_WEB_APP_URL')
-  .then(response => response.json())
-  .then(articles => {
-    const listContainer = document.getElementById('archive-container');
-    articles.forEach(article => {
-      const card = document.createElement('div');
-      card.className = 'article-card';
-      card.innerHTML = `
-        <h4>${article.name}</h4>
-        <p>Published: ${new Date(article.date).toLocaleDateString()}</p>
-        <a href="${article.previewUrl}" target="_blank">View PDF</a>
-      `;
-      listContainer.appendChild(card);
-    });
-  });
+    const API_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(articles => {
+        const container = document.getElementById('archive-container');
+        container.innerHTML = '';
+
+        if (!Array.isArray(articles) || articles.length === 0) {
+          container.innerHTML = '<p>No articles yet — check back soon!</p>';
+          return;
+        }
+
+        articles.forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'article-card';
+          card.innerHTML = `
+            <h4>${article.name}</h4>
+            <p>Published: ${new Date(article.date).toLocaleDateString()}</p>
+            <a href="${article.viewUrl}" target="_blank" rel="noopener">View PDF</a>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        document.getElementById('archive-container').innerHTML =
+          '<p>Could not load articles. Please try again later.</p>';
+        console.error(err);
+      });
   </script>
 </body>
 </html>
