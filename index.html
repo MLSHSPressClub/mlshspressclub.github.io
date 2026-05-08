@@ -3,8 +3,7 @@
 <head>
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <meta charset="UTF-8" />
-  <meta name="keywords" content="mlshs">
-  <meta name="keywords" content="mlshs press">
+  <meta name="keywords" content="mlshs, mlshs press">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Press Club - Home</title>
   <link rel="stylesheet" href="style.css" />
@@ -27,7 +26,7 @@
     <section class="content">
       <h2>Latest Issue</h2>
       <div id="latest-article">
-        <h2 id="current-title">Loading latest article...</h2>
+        <h3 id="current-title">Loading latest article...</h3>
         <iframe id="pdf-viewer" src="" width="100%" height="600px" allow="autoplay"></iframe>
       </div>
     </section>
@@ -40,35 +39,46 @@
         <input type="hidden" name="access_key" value="f74bae96-f830-4a25-afd4-6946e7397c7a">
         <input type="hidden" name="subject" value="Press Club Submission">
         <input type="hidden" name="from_name" value="Press Submission Bot">
-        <input type="hidden" name="redirect" value="https://mlshspressclub/thankyou.html">
+        <input type="hidden" name="redirect" value="https://mlshspressclub.com/thankyou.html">
 
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="number" name="year" placeholder="Year (e.g. 7)" required>
-        <input type="email" name="School Email" placeholder="School Email" required>
+        <input type="email" name="email" placeholder="School Email" required>
 
         <button type="submit">Submit</button>
       </form>
     </section>
-  <section class="signup">
-    <h2>Never Miss an article</h2>
-    <p>Get notified every time a new issue is released</p>
-    <form action="YOUR_WEB_APP_URL_HERE" method="POST">
-      <input type="email" name="email" placeholder="Enter your email" required>
-      <button type="submit">Join List</button>
-    </form>
-  </section>
+
+    <section class="signup">
+      <h2>Never Miss an Article</h2>
+      <p>Get notified every time a new issue is released</p>
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="f74bae96-f830-4a25-afd4-6946e7397c7a">
+        <input type="hidden" name="subject" value="Press Club Newsletter Signup">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Join List</button>
+      </form>
+    </section>
   </main>
 
   <script>
-    fetch('YOUR_APPS_SCRIPT_WEB_APP_URL')
-  .then(response => response.json())
-  .then(articles => {
-    if (articles.length > 0) {
-      const latest = articles[0]; // The script already sorted them!
-      document.getElementById('latest-title').innerText = latest.name;
-      document.getElementById('pdf-frame').src = latest.previewUrl;
-    }
-  });
+    const API_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(articles => {
+        if (Array.isArray(articles) && articles.length > 0) {
+          const latest = articles[0]; // already sorted newest-first
+          document.getElementById('current-title').innerText = latest.name;
+          document.getElementById('pdf-viewer').src = latest.previewUrl;
+        } else {
+          document.getElementById('current-title').innerText = 'No articles yet — check back soon!';
+        }
+      })
+      .catch(err => {
+        document.getElementById('current-title').innerText = 'Could not load latest article.';
+        console.error(err);
+      });
   </script>
 </body>
 </html>
