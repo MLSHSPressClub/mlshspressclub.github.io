@@ -1,1 +1,3 @@
-Sitemap: https://www.example.com/sitemap.xml
+User-agent: *
+Allow: /
+Sitemap: https://mlshspressclub.github.io/sitemap.xml
