@@ -35,18 +35,13 @@
       <h2>Join the Press Club</h2>
       <p>Sign up to contribute articles, artwork, or join our editorial team!</p>
 
-      <form action="https://api.web3forms.com/submit" method="POST" class="signup-form">
-        <input type="hidden" name="access_key" value="f74bae96-f830-4a25-afd4-6946e7397c7a">
-        <input type="hidden" name="subject" value="Press Club Submission">
-        <input type="hidden" name="from_name" value="Press Submission Bot">
-        <input type="hidden" name="redirect" value="https://mlshspressclub.com/thankyou.html">
-
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="number" name="year" placeholder="Year (e.g. 7)" required>
-        <input type="email" name="email" placeholder="School Email" required>
-
+      <form id="join-form" class="signup-form">
+        <input type="text"   id="join-name"  name="name"  placeholder="Your Name" required>
+        <input type="number" id="join-year"  name="year"  placeholder="Year (e.g. 7)" required min="1" max="13">
+        <input type="email"  id="join-email" name="email" placeholder="School Email" required>
         <button type="submit">Submit</button>
       </form>
+      <p id="join-status" style="margin-top: 10px;"></p>
     </section>
 
     <section class="signup">
@@ -62,7 +57,7 @@
 
   <script>
     // Replace this with your Apps Script Web App URL
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwfBhgdk1FYU5Zt8oWG-5iJvDozoEIdGToR0FEG6Fl6drCmEAQfwS1zQdCiyPb_IKkh/exec';
+    const API_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
 
     // Load latest article
     fetch(API_URL)
@@ -95,12 +90,7 @@
         const formData = new FormData();
         formData.append('email', email);
 
-        // Apps Script POST endpoints don't support CORS preflight, so we use
-        // a "simple" request (no custom headers, FormData body) which avoids it.
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: formData
-        });
+        const res = await fetch(API_URL, { method: 'POST', body: formData });
         const data = await res.json();
 
         if (data.ok) {
@@ -114,6 +104,44 @@
       } catch (err) {
         status.style.color = 'crimson';
         status.innerText = 'Could not sign up right now. Please try again later.';
+        console.error(err);
+      }
+    });
+
+    // Join the Press Club
+    document.getElementById('join-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nameEl  = document.getElementById('join-name');
+      const yearEl  = document.getElementById('join-year');
+      const emailEl = document.getElementById('join-email');
+      const status  = document.getElementById('join-status');
+
+      status.style.color = '#666';
+      status.innerText = 'Submitting your application...';
+
+      try {
+        const formData = new FormData();
+        formData.append('action', 'apply');
+        formData.append('name',  nameEl.value.trim());
+        formData.append('year',  yearEl.value.trim());
+        formData.append('email', emailEl.value.trim());
+
+        const res = await fetch(API_URL, { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.ok) {
+          status.style.color = 'green';
+          status.innerText = 'Thanks! Your application has been received — we\'ll be in touch soon.';
+          nameEl.value = '';
+          yearEl.value = '';
+          emailEl.value = '';
+        } else {
+          status.style.color = 'crimson';
+          status.innerText = data.error || 'Something went wrong. Please try again.';
+        }
+      } catch (err) {
+        status.style.color = 'crimson';
+        status.innerText = 'Could not submit right now. Please try again later.';
         console.error(err);
       }
     });
