@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <meta charset="UTF-8" />
-  <meta name="description" content="MLSHS Press Club is the student-run newspaper of Mount Lawley Senior Hight School. Read our latest issues, articles, and join our team.">
-  <meta name="author" content="MLSHS Press Club">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Canonical URL — tells Google the "official" URL for this page -->
+  <title>Press Club — [Your School Name] Student Newspaper</title>
+  <meta name="description" content="The Press Club is the student-run newspaper of [Your School Name]. Read our latest issues, browse the archive, and join our team of writers and editors.">
+  <meta name="author" content="Press Club, [Your School Name]">
+
   <link rel="canonical" href="https://mlshspressclub.github.io/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="style.css" />
 
-  <!-- Open Graph (controls preview when shared on social/messaging) -->
-  <meta property="og:title" content="Press Club">
-  <meta property="og:description" content="The student-run newspaper of Mount Lawley Senior Hight School.">
+  <!-- Social preview -->
+  <meta property="og:title" content="Press Club — [Your School Name] Student Newspaper">
+  <meta property="og:description" content="The student-run newspaper of [Your School Name]. Read our latest issues and browse the archive.">
   <meta property="og:url" content="https://mlshspressclub.github.io/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://mlshspressclub.github.io/preview.png">
+  <meta name="twitter:card" content="summary">
 
-  <!-- Twitter card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Press Club - Home</title>
-  <link rel="stylesheet" href="style.css" />
+  <!-- Tells Google what kind of thing this site is -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "Press Club",
+    "alternateName": "[Your School Name] Press Club",
+    "url": "https://mlshspressclub.github.io/",
+    "description": "Student-run newspaper of [Your School Name]."
+  }
+  </script>
 </head>
 <body>
   <header class="navbar">
@@ -37,17 +46,35 @@
   </header>
 
   <main>
+    <section class="intro">
+      <h2>Welcome to the [Your School Name] Press Club</h2>
+      <p>
+        We are the student-run newspaper of [Your School Name], publishing
+        articles, features, opinion pieces, and creative work written by
+        students, for students. New issues are released regularly throughout
+        the school year — read the latest below, or browse
+        <a href="/issues">every issue in our archive</a>.
+      </p>
+    </section>
+
     <section class="content">
       <h2>Latest Issue</h2>
       <div id="latest-article">
         <h3 id="current-title">Loading latest article...</h3>
-        <iframe id="pdf-viewer" src="" width="100%" height="600px" allow="autoplay"></iframe>
+        <p id="latest-fallback">
+          Our latest issue should appear here in a moment. If it doesn't load,
+          you can <a href="/issues">view the full archive</a>.
+        </p>
+        <iframe id="pdf-viewer" src="" width="100%" height="600px" allow="autoplay" title="Latest Press Club issue"></iframe>
       </div>
     </section>
 
     <section class="signup">
       <h2>Join the Press Club</h2>
-      <p>Sign up to contribute articles, artwork, or join our editorial team!</p>
+      <p>
+        Want to write articles, contribute artwork, or help edit the next
+        issue? Fill in the form below and a member of our team will be in touch.
+      </p>
 
       <form id="join-form" class="signup-form">
         <input type="text"   id="join-name"  name="name"  placeholder="Your Name" required>
@@ -55,22 +82,35 @@
         <input type="email"  id="join-email" name="email" placeholder="School Email" required>
         <button type="submit">Submit</button>
       </form>
-      <p id="join-status" style="margin-top: 10px;"></p>
+      <p id="join-status" style="margin-top: 10px;" role="status" aria-live="polite"></p>
     </section>
 
     <section class="signup">
       <h2>Never Miss an Article</h2>
-      <p>Get notified every time a new issue is released.</p>
+      <p>Get notified by email every time we release a new issue.</p>
       <form id="newsletter-form">
         <input type="email" id="newsletter-email" name="email" placeholder="Enter your email" required>
         <button type="submit">Join List</button>
       </form>
-      <p id="newsletter-status" style="margin-top: 10px;"></p>
+      <p id="newsletter-status" style="margin-top: 10px;" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="about-short">
+      <h2>About Us</h2>
+      <p>
+        The Press Club was founded by students at [Your School Name] to give
+        the school community a place to share stories, ideas, and creative
+        work. Every issue is written, edited, and produced by students. Learn
+        more <a href="/about">about who we are and what we do</a>.
+      </p>
     </section>
   </main>
 
+  <footer>
+    <p>&copy; Press Club, [Your School Name]. All articles are written by students.</p>
+  </footer>
+
   <script>
-    // Replace this with your Apps Script Web App URL
     const API_URL = 'https://script.google.com/macros/s/AKfycbwfBhgdk1FYU5Zt8oWG-5iJvDozoEIdGToR0FEG6Fl6drCmEAQfwS1zQdCiyPb_IKkh/exec';
 
     // Load latest article
@@ -81,12 +121,15 @@
           const latest = articles[0];
           document.getElementById('current-title').innerText = latest.name;
           document.getElementById('pdf-viewer').src = latest.previewUrl;
+          // Hide the fallback message once the real content is in
+          const fallback = document.getElementById('latest-fallback');
+          if (fallback) fallback.style.display = 'none';
         } else {
-          document.getElementById('current-title').innerText = 'No articles yet — check back soon!';
+          document.getElementById('current-title').innerText = 'No issues published yet — check back soon!';
         }
       })
       .catch(err => {
-        document.getElementById('current-title').innerText = 'Could not load latest article.';
+        document.getElementById('current-title').innerText = 'Could not load latest issue.';
         console.error(err);
       });
 
@@ -103,7 +146,6 @@
       try {
         const formData = new FormData();
         formData.append('email', email);
-
         const res = await fetch(API_URL, { method: 'POST', body: formData });
         const data = await res.json();
 
@@ -139,7 +181,6 @@
         formData.append('name',  nameEl.value.trim());
         formData.append('year',  yearEl.value.trim());
         formData.append('email', emailEl.value.trim());
-
         const res = await fetch(API_URL, { method: 'POST', body: formData });
         const data = await res.json();
 
